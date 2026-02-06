@@ -95,6 +95,79 @@ Messages are grouped into categories based on their syslog name prefix. Use `--c
 | **chassis**  | Hardware, fans, power, temperature    | CHASSISD_ |
 | **routing**  | BGP, OSPF, ISIS, MPLS, EVPN, LDP     | BGP_, RPD_OSPF_, RPD_ISIS_, RPD_BGP_, RPD_LDP_, RPD_MPLS_, RPD_RSVP_, RPD_PIM_, RPD_IGMP_, RPD_MLD_, RPD_KRT_, RPD_RT_, RPD_SPRING_, EVPN_, MPLS_ |
 
+## Example Output
+
+Here are three real extractors from the generated JSON to give you a feel for what you get:
+
+### Flow: Session Create (RT_FLOW_SESSION_CREATE)
+
+Every time a new session is created on your SRX, this extractor pulls out source/destination IPs, ports, NAT translations, protocol, policy name, zones, and application info:
+
+```json
+{
+  "title": "RT_FLOW_SESSION_CREATE",
+  "extractor_type": "grok",
+  "converters": [],
+  "order": 1275,
+  "cursor_strategy": "copy",
+  "source_field": "message",
+  "target_field": "",
+  "extractor_config": {
+    "grok_pattern": "session\\ created\\ %{IP:source_address}/%{NUMBER:source_port}\\->%{IP:destination_address}/%{NUMBER:destination_port}\\ 0x%{DATA:connection_tag}\\ %{DATA:service_name}\\ %{IP:nat_source_address}/%{NUMBER:nat_source_port}\\->%{IP:nat_destination_address}/%{NUMBER:nat_destination_port}\\ ..."
+  },
+  "condition_type": "string",
+  "condition_value": "RT_FLOW_SESSION_CREATE"
+}
+```
+
+Fields extracted: `source_address`, `source_port`, `destination_address`, `destination_port`, `nat_source_address`, `nat_source_port`, `nat_destination_address`, `nat_destination_port`, `src_nat_rule_name`, `dst_nat_rule_name`, `protocol_id`, `policy_name`, `source_zone_name`, `destination_zone_name`, `session_id`, `username`, `application`, and more.
+
+### UTM: Web Filter URL Blocked (WEBFILTER_URL_BLOCKED)
+
+When the SRX blocks a URL via web filtering, this extractor captures the source/destination zones, IPs, ports, the blocked URL, category, reason, and user info:
+
+```json
+{
+  "title": "WEBFILTER_URL_BLOCKED",
+  "extractor_type": "grok",
+  "converters": [],
+  "order": 1519,
+  "cursor_strategy": "copy",
+  "source_field": "message",
+  "target_field": "",
+  "extractor_config": {
+    "grok_pattern": "WebFilter:\\ ACTION=\"URL\\ Blocked\"\\ source\\-zone=\"%{DATA:source_zone}\"\\ destination\\-zone=\"%{DATA:destination_zone}\"%{IP:source_address}\\(%{NUMBER:source_port}\\)\\->%{IP:destination_address}\\(%{NUMBER:destination_port}\\)\\ SESSION_ID=%{NUMBER:session_id}\\ APPLICATION=\"%{DATA:application}\"\\ ..."
+  },
+  "condition_type": "string",
+  "condition_value": "WEBFILTER_URL_BLOCKED"
+}
+```
+
+Fields extracted: `source_zone`, `destination_zone`, `source_address`, `source_port`, `destination_address`, `destination_port`, `session_id`, `application`, `nested_application`, `category`, `reason`, `profile`, `url`, `username`, `roles`.
+
+### Chassis: FRU Over Temperature (CHASSISD_FRU_OVER_TEMP_CONDITION)
+
+If a line card or power supply overheats, this extractor captures which FRU, the sensor, current temperature, threshold, and how long before shutdown:
+
+```json
+{
+  "title": "CHASSISD_FRU_OVER_TEMP_CONDITION",
+  "extractor_type": "grok",
+  "converters": [],
+  "order": 366,
+  "cursor_strategy": "copy",
+  "source_field": "message",
+  "target_field": "",
+  "extractor_config": {
+    "grok_pattern": "%{DATA:fru_name}\\ %{DATA:fru_slot}\\ %{DATA:sensor}\\ temperature\\ %{DATA:temperature}\\ over\\ %{DATA:threshold}\\ degrees\\ C\\ \\(%{DATA:message}\\);\\ FRU\\ will\\ shut\\ down\\ in\\ %{DATA:duration}\\ seconds\\ if\\ condition\\ persists"
+  },
+  "condition_type": "string",
+  "condition_value": "CHASSISD_FRU_OVER_TEMP_CONDITION"
+}
+```
+
+Fields extracted: `fru_name`, `fru_slot`, `sensor`, `temperature`, `threshold`, `message`, `duration`.
+
 ## All CLI Options
 
 | Option              | Description                                      |
