@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# pytest
+.pytest_cache/
+
+# Output files (user-generated)
+*.json
+!package.json
+
+# Excel spreadsheets (user must download their own)
+*.xlsx
+
+# OS
+.DS_Store
+Thumbs.db
