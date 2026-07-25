@@ -6,7 +6,7 @@ If you run Juniper SRX, EX, MX, or QFX devices and use **Graylog** for log manag
 
 ## What It Does
 
-```
+```text
 Juniper Syslog Excel Spreadsheet  ──►  juniper_grokoid  ──►  Graylog Extractor JSON
 ```
 
@@ -18,14 +18,14 @@ Juniper publishes an Excel file documenting every syslog message in Junos OS, in
 
 For example, this Junos syslog template:
 
-```
+```text
 session denied <variable>source-address</variable>/<variable>source-port</variable>->
 <variable>destination-address</variable>/<variable>destination-port</variable>
 ```
 
 Becomes this Grok pattern:
 
-```
+```text
 session denied %{IP:source_address}/%{NUMBER:source_port}->%{IP:destination_address}/%{NUMBER:destination_port}
 ```
 
@@ -35,7 +35,7 @@ session denied %{IP:source_address}/%{NUMBER:source_port}->%{IP:destination_addr
 
 Go to Juniper's **System Log Explorer** page for your Junos version:
 
-> https://www.juniper.net/documentation/us/en/software/junos/syslog-messages/topics/topic-map/syslog-explorer-top.html
+> <https://www.juniper.net/documentation/us/en/software/junos/syslog-messages/topics/topic-map/syslog-explorer-top.html>
 
 Click **"Download as Excel"** and save the `.xlsx` file into this folder.
 
