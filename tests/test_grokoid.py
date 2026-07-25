@@ -11,13 +11,12 @@ from juniper_grokoid import (
     has_variables,
     parse_args,
     template_to_grok,
-    variable_to_grok,
 )
-
 
 # ---------------------------------------------------------------------------
 # template_to_grok — 6 spec test cases (exact string match)
 # ---------------------------------------------------------------------------
+
 
 class TestTemplateToGrok:
     """All six spec test cases with exact input/output matching."""
@@ -54,34 +53,63 @@ class TestTemplateToGrok:
             "<variable>user-type</variable>"
         )
         expected = (
-            "session" + re.escape(" ") + "denied" + re.escape(" ")
+            "session"
+            + re.escape(" ")
+            + "denied"
+            + re.escape(" ")
             + "%{IP:source_address}/%{NUMBER:source_port}"
             + re.escape("->")
             + "%{IP:destination_address}/%{NUMBER:destination_port}"
-            + re.escape(" ") + "0x%{DATA:connection_tag}"
-            + re.escape(" ") + "%{DATA:service_name}"
-            + re.escape(" ") + "%{NUMBER:protocol_id}"
-            + re.escape("(") + "%{DATA:icmp_type}" + re.escape(")")
-            + re.escape(" ") + "%{DATA:policy_name}"
-            + re.escape(" ") + "%{DATA:source_zone_name}"
-            + re.escape(" ") + "%{DATA:destination_zone_name}"
-            + re.escape(" ") + "%{DATA:application}"
-            + re.escape(" ") + "%{DATA:nested_application}"
-            + re.escape(" ") + "%{DATA:username}"
-            + re.escape("(") + "%{DATA:roles}" + re.escape(")")
-            + re.escape(" ") + "%{DATA:packet_incoming_interface}"
-            + re.escape(" ") + "%{DATA:encrypted}"
-            + re.escape(" ") + "%{DATA:reason}"
-            + re.escape(" ") + "%{NUMBER:session_id}"
-            + re.escape(" ") + "%{DATA:application_category}"
-            + re.escape(" ") + "%{DATA:application_sub_category}"
-            + re.escape(" ") + "%{DATA:application_risk}"
-            + re.escape(" ") + "%{DATA:application_characteristics}"
-            + re.escape(" ") + "%{DATA:src_vrf_grp}"
-            + re.escape(" ") + "%{DATA:dst_vrf_grp}"
-            + re.escape(" ") + "%{DATA:source_tenant}"
-            + re.escape(" ") + "%{DATA:destination_service}"
-            + re.escape(" ") + "%{DATA:user_type}"
+            + re.escape(" ")
+            + "0x%{DATA:connection_tag}"
+            + re.escape(" ")
+            + "%{DATA:service_name}"
+            + re.escape(" ")
+            + "%{NUMBER:protocol_id}"
+            + re.escape("(")
+            + "%{DATA:icmp_type}"
+            + re.escape(")")
+            + re.escape(" ")
+            + "%{DATA:policy_name}"
+            + re.escape(" ")
+            + "%{DATA:source_zone_name}"
+            + re.escape(" ")
+            + "%{DATA:destination_zone_name}"
+            + re.escape(" ")
+            + "%{DATA:application}"
+            + re.escape(" ")
+            + "%{DATA:nested_application}"
+            + re.escape(" ")
+            + "%{DATA:username}"
+            + re.escape("(")
+            + "%{DATA:roles}"
+            + re.escape(")")
+            + re.escape(" ")
+            + "%{DATA:packet_incoming_interface}"
+            + re.escape(" ")
+            + "%{DATA:encrypted}"
+            + re.escape(" ")
+            + "%{DATA:reason}"
+            + re.escape(" ")
+            + "%{NUMBER:session_id}"
+            + re.escape(" ")
+            + "%{DATA:application_category}"
+            + re.escape(" ")
+            + "%{DATA:application_sub_category}"
+            + re.escape(" ")
+            + "%{DATA:application_risk}"
+            + re.escape(" ")
+            + "%{DATA:application_characteristics}"
+            + re.escape(" ")
+            + "%{DATA:src_vrf_grp}"
+            + re.escape(" ")
+            + "%{DATA:dst_vrf_grp}"
+            + re.escape(" ")
+            + "%{DATA:source_tenant}"
+            + re.escape(" ")
+            + "%{DATA:destination_service}"
+            + re.escape(" ")
+            + "%{DATA:user_type}"
         )
         assert template_to_grok(template) == expected
 
@@ -97,15 +125,26 @@ class TestTemplateToGrok:
             "(<variable>count</variable> packets)"
         )
         expected = (
-            "FW:" + re.escape(" ") + "%{DATA:interface_name}"
-            + re.escape(" ") + "%{DATA:action}"
-            + re.escape(" ") + "%{DATA:protocol_name}"
-            + re.escape(" ") + "%{IP:source_address}"
-            + re.escape(" ") + "%{IP:destination_address}"
-            + re.escape(" ") + "%{NUMBER:source_port_or_type}"
-            + re.escape(" ") + "%{NUMBER:destination_port_or_code}"
-            + re.escape(" (") + "%{NUMBER:count}"
-            + re.escape(" ") + "packets" + re.escape(")")
+            "FW:"
+            + re.escape(" ")
+            + "%{DATA:interface_name}"
+            + re.escape(" ")
+            + "%{DATA:action}"
+            + re.escape(" ")
+            + "%{DATA:protocol_name}"
+            + re.escape(" ")
+            + "%{IP:source_address}"
+            + re.escape(" ")
+            + "%{IP:destination_address}"
+            + re.escape(" ")
+            + "%{NUMBER:source_port_or_type}"
+            + re.escape(" ")
+            + "%{NUMBER:destination_port_or_code}"
+            + re.escape(" (")
+            + "%{NUMBER:count}"
+            + re.escape(" ")
+            + "packets"
+            + re.escape(")")
         )
         assert template_to_grok(template) == expected
 
@@ -137,21 +176,36 @@ class TestTemplateToGrok:
             + "%{DATA:destination_zone}"
             + re.escape('"')
             + "%{IP:source_address}"
-            + re.escape("(") + "%{NUMBER:source_port}" + re.escape(")")
+            + re.escape("(")
+            + "%{NUMBER:source_port}"
+            + re.escape(")")
             + re.escape("->")
             + "%{IP:destination_address}"
-            + re.escape("(") + "%{NUMBER:destination_port}" + re.escape(")")
-            + re.escape(" SESSION_ID=") + "%{NUMBER:session_id}"
-            + re.escape(' APPLICATION="') + "%{DATA:application}"
-            + re.escape('" NESTED-APPLICATION="') + "%{DATA:nested_application}"
-            + re.escape('"CATEGORY="') + "%{DATA:category}"
-            + re.escape('" REASON="') + "%{DATA:reason}"
-            + re.escape('" PROFILE="') + "%{DATA:profile}"
-            + re.escape('" URL=') + "%{DATA:url}"
-            + re.escape(" username ") + "%{DATA:username}"
-            + re.escape(" roles ") + "%{DATA:roles}"
-            + re.escape(" application-sub-category ") + "%{DATA:application_sub_category}"
-            + re.escape(" urlcategory-risk ") + "%{DATA:urlcategory_risk}"
+            + re.escape("(")
+            + "%{NUMBER:destination_port}"
+            + re.escape(")")
+            + re.escape(" SESSION_ID=")
+            + "%{NUMBER:session_id}"
+            + re.escape(' APPLICATION="')
+            + "%{DATA:application}"
+            + re.escape('" NESTED-APPLICATION="')
+            + "%{DATA:nested_application}"
+            + re.escape('"CATEGORY="')
+            + "%{DATA:category}"
+            + re.escape('" REASON="')
+            + "%{DATA:reason}"
+            + re.escape('" PROFILE="')
+            + "%{DATA:profile}"
+            + re.escape('" URL=')
+            + "%{DATA:url}"
+            + re.escape(" username ")
+            + "%{DATA:username}"
+            + re.escape(" roles ")
+            + "%{DATA:roles}"
+            + re.escape(" application-sub-category ")
+            + "%{DATA:application_sub_category}"
+            + re.escape(" urlcategory-risk ")
+            + "%{DATA:urlcategory_risk}"
         )
         assert template_to_grok(template) == expected
 
@@ -183,28 +237,50 @@ class TestTemplateToGrok:
         )
         expected = (
             "hostname=%{DATA:hostname}"
-            + re.escape(" file-category=") + "%{DATA:file_category}"
-            + re.escape(" verdict-number=") + "%{NUMBER:verdict_number}"
-            + re.escape(" mw-info=") + "%{DATA:malware_info}"
-            + re.escape(" action=") + "%{DATA:action}"
-            + re.escape(" list-hit=") + "%{DATA:list_hit}"
-            + re.escape(" file-hash-lookup=") + "%{DATA:file_hash_lookup}"
-            + re.escape(" source-address=") + "%{IP:source_address}"
-            + re.escape(" source-port=") + "%{NUMBER:source_port}"
-            + re.escape(" destination-address=") + "%{IP:destination_address}"
-            + re.escape(" destination-port=") + "%{NUMBER:destination_port}"
-            + re.escape(" protocol-id=") + "%{NUMBER:protocol_id}"
-            + re.escape(" application=") + "%{DATA:application}"
-            + re.escape(" nested-application=") + "%{DATA:nested_application}"
-            + re.escape(" policy-name=") + "%{DATA:policy_name}"
-            + re.escape(" username=") + "%{DATA:username}"
-            + re.escape(" roles=") + "%{DATA:roles}"
-            + re.escape(" session-id=") + "%{NUMBER:session_id}"
-            + re.escape(" source-zone-name=") + "%{DATA:source_zone_name}"
-            + re.escape(" destination-zone-name=") + "%{DATA:destination_zone_name}"
-            + re.escape(" sample-sha256=") + "%{DATA:sample_sha256}"
-            + re.escape(" file-name=") + "%{DATA:file_name}"
-            + re.escape(" url=") + "%{DATA:url}"
+            + re.escape(" file-category=")
+            + "%{DATA:file_category}"
+            + re.escape(" verdict-number=")
+            + "%{NUMBER:verdict_number}"
+            + re.escape(" mw-info=")
+            + "%{DATA:malware_info}"
+            + re.escape(" action=")
+            + "%{DATA:action}"
+            + re.escape(" list-hit=")
+            + "%{DATA:list_hit}"
+            + re.escape(" file-hash-lookup=")
+            + "%{DATA:file_hash_lookup}"
+            + re.escape(" source-address=")
+            + "%{IP:source_address}"
+            + re.escape(" source-port=")
+            + "%{NUMBER:source_port}"
+            + re.escape(" destination-address=")
+            + "%{IP:destination_address}"
+            + re.escape(" destination-port=")
+            + "%{NUMBER:destination_port}"
+            + re.escape(" protocol-id=")
+            + "%{NUMBER:protocol_id}"
+            + re.escape(" application=")
+            + "%{DATA:application}"
+            + re.escape(" nested-application=")
+            + "%{DATA:nested_application}"
+            + re.escape(" policy-name=")
+            + "%{DATA:policy_name}"
+            + re.escape(" username=")
+            + "%{DATA:username}"
+            + re.escape(" roles=")
+            + "%{DATA:roles}"
+            + re.escape(" session-id=")
+            + "%{NUMBER:session_id}"
+            + re.escape(" source-zone-name=")
+            + "%{DATA:source_zone_name}"
+            + re.escape(" destination-zone-name=")
+            + "%{DATA:destination_zone_name}"
+            + re.escape(" sample-sha256=")
+            + "%{DATA:sample_sha256}"
+            + re.escape(" file-name=")
+            + "%{DATA:file_name}"
+            + re.escape(" url=")
+            + "%{DATA:url}"
         )
         assert template_to_grok(template) == expected
 
@@ -221,13 +297,20 @@ class TestTemplateToGrok:
         )
         expected = (
             "%{DATA:attack_name}"
-            + re.escape(" source: ") + "%{IP:source_address}"
-            + ":" + "%{NUMBER:source_port}"
-            + re.escape(", destination: ") + "%{IP:destination_address}"
-            + ":" + "%{NUMBER:destination_port}"
-            + re.escape(", zone name: ") + "%{DATA:source_zone_name}"
-            + re.escape(", interface name: ") + "%{DATA:interface_name}"
-            + re.escape(", action: ") + "%{DATA:action}"
+            + re.escape(" source: ")
+            + "%{IP:source_address}"
+            + ":"
+            + "%{NUMBER:source_port}"
+            + re.escape(", destination: ")
+            + "%{IP:destination_address}"
+            + ":"
+            + "%{NUMBER:destination_port}"
+            + re.escape(", zone name: ")
+            + "%{DATA:source_zone_name}"
+            + re.escape(", interface name: ")
+            + "%{DATA:interface_name}"
+            + re.escape(", action: ")
+            + "%{DATA:action}"
         )
         assert template_to_grok(template) == expected
 
@@ -253,20 +336,34 @@ class TestTemplateToGrok:
         expected = (
             re.escape("AntiVirus: Virus detected: SESSION_ID=")
             + "%{NUMBER:session_id}"
-            + re.escape(' source-zone "') + "%{DATA:source_zone}"
-            + re.escape('" destination-zone "') + "%{DATA:destination_zone}"
+            + re.escape(' source-zone "')
+            + "%{DATA:source_zone}"
+            + re.escape('" destination-zone "')
+            + "%{DATA:destination_zone}"
             + re.escape('" ')
-            + "%{IP:source_address}" + ":" + "%{NUMBER:source_port}"
+            + "%{IP:source_address}"
+            + ":"
+            + "%{NUMBER:source_port}"
             + re.escape("->")
-            + "%{IP:destination_address}" + ":" + "%{NUMBER:destination_port}"
-            + re.escape(' profile-name="') + "%{DATA:profile_name}"
-            + re.escape('" file="') + "%{DATA:filename}"
-            + re.escape('" temp_file="') + "%{DATA:temporary_filename}"
-            + re.escape('" action="') + "%{DATA:action}"
-            + re.escape('" virus="') + "%{DATA:name}"
-            + re.escape('" URL="') + "%{DATA:url}"
-            + re.escape('" username="') + "%{DATA:username}"
-            + re.escape('" roles="') + "%{DATA:roles}"
+            + "%{IP:destination_address}"
+            + ":"
+            + "%{NUMBER:destination_port}"
+            + re.escape(' profile-name="')
+            + "%{DATA:profile_name}"
+            + re.escape('" file="')
+            + "%{DATA:filename}"
+            + re.escape('" temp_file="')
+            + "%{DATA:temporary_filename}"
+            + re.escape('" action="')
+            + "%{DATA:action}"
+            + re.escape('" virus="')
+            + "%{DATA:name}"
+            + re.escape('" URL="')
+            + "%{DATA:url}"
+            + re.escape('" username="')
+            + "%{DATA:username}"
+            + re.escape('" roles="')
+            + "%{DATA:roles}"
             + re.escape('"')
         )
         assert template_to_grok(template) == expected
@@ -275,6 +372,7 @@ class TestTemplateToGrok:
 # ---------------------------------------------------------------------------
 # classify_variable
 # ---------------------------------------------------------------------------
+
 
 class TestClassifyVariable:
     def test_ip_source_address(self):
@@ -337,6 +435,7 @@ class TestClassifyVariable:
 # extract_category
 # ---------------------------------------------------------------------------
 
+
 class TestExtractCategory:
     def test_security_rt_screen(self):
         assert extract_category("RT_SCREEN_TCP") == "security"
@@ -376,6 +475,7 @@ class TestExtractCategory:
 # has_variables
 # ---------------------------------------------------------------------------
 
+
 class TestHasVariables:
     def test_with_variable(self):
         assert has_variables("source=<variable>src</variable>") is True
@@ -390,6 +490,7 @@ class TestHasVariables:
 # ---------------------------------------------------------------------------
 # build_extractor
 # ---------------------------------------------------------------------------
+
 
 class TestBuildExtractor:
     def test_structure(self):
@@ -413,6 +514,7 @@ class TestBuildExtractor:
 # ---------------------------------------------------------------------------
 # CLI arg parsing
 # ---------------------------------------------------------------------------
+
 
 class TestParseArgs:
     def test_basic_input(self):
