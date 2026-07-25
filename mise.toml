@@ -1,0 +1,3 @@
+[tasks.test]
+description = "Run test suite"
+run = "uv run --group test pytest tests/ -v"
