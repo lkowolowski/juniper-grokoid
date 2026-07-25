@@ -1,4 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.10"
+# dependencies = [
+#   "openpyxl>=3.0.0",
+# ]
+# ///
 """juniper_grokoid — Junos Syslog → Graylog Grok Extractor Generator.
 
 Reads Juniper Junos OS syslog message definitions from an Excel spreadsheet
@@ -21,25 +27,59 @@ import openpyxl
 
 CATEGORY_MAP = {
     "security": [
-        "RT_SCREEN_", "RT_IPSEC_", "IDP_", "KMD_", "IKE_",
-        "IPSEC_", "FWAUTH_", "SSL_PROXY_", "SECINTEL_",
-        "PFE_FW_", "PFE_SCREEN_", "DDOS_",
+        "RT_SCREEN_",
+        "RT_IPSEC_",
+        "IDP_",
+        "KMD_",
+        "IKE_",
+        "IPSEC_",
+        "FWAUTH_",
+        "SSL_PROXY_",
+        "SECINTEL_",
+        "PFE_FW_",
+        "PFE_SCREEN_",
+        "DDOS_",
     ],
     "utm": [
-        "WEBFILTER_", "AAMW_", "AV_", "ANTI_VIRUS_",
-        "ANTISPAM_", "URLFD_", "UTMD_", "ICAP_", "APPTRACK_",
+        "WEBFILTER_",
+        "AAMW_",
+        "AV_",
+        "ANTI_VIRUS_",
+        "ANTISPAM_",
+        "URLFD_",
+        "UTMD_",
+        "ICAP_",
+        "APPTRACK_",
     ],
     "flow": [
-        "RT_FLOW_", "RT_ALG_", "RT_GTP_", "RT_SCTP_",
-        "RT_NAT_", "RT_SRC_", "RT_DST_", "RT_STATIC_",
-        "FLOW_", "PFE_FLOWD_",
+        "RT_FLOW_",
+        "RT_ALG_",
+        "RT_GTP_",
+        "RT_SCTP_",
+        "RT_NAT_",
+        "RT_SRC_",
+        "RT_DST_",
+        "RT_STATIC_",
+        "FLOW_",
+        "PFE_FLOWD_",
     ],
     "chassis": ["CHASSISD_"],
     "routing": [
-        "BGP_", "RPD_OSPF_", "RPD_ISIS_", "RPD_BGP_",
-        "RPD_LDP_", "RPD_MPLS_", "RPD_RSVP_", "RPD_PIM_",
-        "RPD_IGMP_", "RPD_MLD_", "RPD_KRT_", "RPD_RT_",
-        "RPD_SPRING_", "EVPN_", "MPLS_",
+        "BGP_",
+        "RPD_OSPF_",
+        "RPD_ISIS_",
+        "RPD_BGP_",
+        "RPD_LDP_",
+        "RPD_MPLS_",
+        "RPD_RSVP_",
+        "RPD_PIM_",
+        "RPD_IGMP_",
+        "RPD_MLD_",
+        "RPD_KRT_",
+        "RPD_RT_",
+        "RPD_SPRING_",
+        "EVPN_",
+        "MPLS_",
     ],
 }
 
@@ -204,19 +244,23 @@ def parse_args(argv=None):
         description="Generate Graylog Grok extractors from Junos syslog definitions.",
     )
     parser.add_argument(
-        "--input", "-i",
+        "--input",
+        "-i",
         help="Path to the Junos syslog Excel file.",
     )
     parser.add_argument(
-        "--output", "-o",
+        "--output",
+        "-o",
         help="Output JSON file (default: stdout).",
     )
     parser.add_argument(
-        "--categories", "-c",
+        "--categories",
+        "-c",
         help="Comma-separated list of categories to include (default: all).",
     )
     parser.add_argument(
-        "--dry-run", "-n",
+        "--dry-run",
+        "-n",
         action="store_true",
         help="Print name + grok pattern pairs instead of JSON.",
     )
